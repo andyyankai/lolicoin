@@ -1,84 +1,20 @@
 package main
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
-	"net/http"
-	"time"
-	"strings"
-
+	"fmt"
 )
 
-type Block struct {
-	Index	int
-	Timestamp	string
-	BPM	int
-	Hash	string
-	PrevHash	string
-}
-
-var Blockchain []Block
-
-type Message struct {
-	BPM int
-}
-
-func calculateHash(block Block) string {
-	record := string(block.Index) + block.Timestamp + string(block.BPM) + block.PrevHash
-	h := sha256.New()
-	h.Write([]byte(record))
-	hashed := h.Sum(nil)
-	return hex.EncodeToString(hashed)
-}
-
-func generateBlock(oldBlock Block, BPM int) (Block, error) {
-
-	var newBlock Block
-
-	t := time.Now()
-
-	newBlock.Index = oldBlock.Index + 1
-	newBlock.Timestamp = t.String()
-	newBlock.BPM = BPM
-	newBlock.PrevHash = oldBlock.Hash
-	newBlock.Hash = calculateHash(newBlock)
-
-	return newBlock, nil
-}
-
-
-func isBlockValid(newBlock, oldBlock Block) bool {
-	if oldBlock.Index+1 != newBlock.Index {
-		return false
-	}
-
-	if oldBlock.Hash != newBlock.PrevHash {
-		return false
-	}
-
-	if calculateHash(newBlock) != newBlock.Hash {
-		return false
-	}
-
-	return true
-}
-
-func replaceChain(newBlocks []Block) {
-	if len(newBlocks) > len(Blockchain) {
-		Blockchain = newBlocks
-	}
-}
-
-func web(w http.ResponseWriter, r *http.Request) {
-  message := r.URL.Path
-  message = strings.TrimPrefix(message, "/")
-  message = "Hello " + message
-  w.Write([]byte(message))
-}
 func main() {
-  http.HandleFunc("/", web)
-  if err := http.ListenAndServe(":8080", nil); err != nil {
-    panic(err)
-  }
+	bc := NewLolichan()
+
+	bc.AddLoli("Send 1 lolicoin to A")
+	bc.AddLoli("Send 2 more lolicoin to A")
+
+	for _, loli := range bc.lolis {
+		fmt.Printf("Prev. hash: %x\n", loli.PrevLoliHash)
+		fmt.Printf("Data: %s\n", loli.Data)
+		fmt.Printf("Hash: %x\n", loli.Hash)
+		fmt.Println()
+	}
 }
 
