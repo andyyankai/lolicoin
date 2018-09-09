@@ -3,12 +3,9 @@ package main
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
-	"io"
-	"log"
 	"net/http"
-	"os"
 	"time"
+	"strings"
 
 )
 
@@ -72,4 +69,16 @@ func replaceChain(newBlocks []Block) {
 	}
 }
 
+func web(w http.ResponseWriter, r *http.Request) {
+  message := r.URL.Path
+  message = strings.TrimPrefix(message, "/")
+  message = "Hello " + message
+  w.Write([]byte(message))
+}
+func main() {
+  http.HandleFunc("/", web)
+  if err := http.ListenAndServe(":8080", nil); err != nil {
+    panic(err)
+  }
+}
 
