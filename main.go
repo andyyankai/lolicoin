@@ -19,3 +19,11 @@ type Block struct {
 	Hash	string
 	PrevHash	string
 }
+
+var Blockchain []Block
+
+type Message struct {
+	BPM int
+}
+
+
