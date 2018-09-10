@@ -16,5 +16,8 @@ func main() {
 		fmt.Printf("Hash: %x\n", loli.Hash)
 		fmt.Println()
 	}
+
+	connect()
+	run()
 }
 
