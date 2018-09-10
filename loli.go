@@ -13,6 +13,7 @@ type Loli struct {
 	Data          []byte
 	PrevLoliHash []byte
 	Hash          []byte
+	Nonce		int
 }
 
 // SetHash calculates and sets block hash
@@ -26,7 +27,7 @@ func (b *Loli) SetHash() {
 
 // NewBlock creates and returns Block
 func NewLoli(data string, prevLoliHash []byte) *Loli {
-	loli := &Loli{time.Now().Unix(), []byte(data), prevLoliHash, []byte{}}
+	loli := &Loli{time.Now().Unix(), []byte(data), prevLoliHash, []byte{}, 0}
 	loli.SetHash()
 	return loli
 }

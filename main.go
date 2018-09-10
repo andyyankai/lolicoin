@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
 func main() {
@@ -15,9 +16,9 @@ func main() {
 		fmt.Printf("Data: %s\n", loli.Data)
 		fmt.Printf("Hash: %x\n", loli.Hash)
 		fmt.Println()
+		pow := NewProofOfWork(loli)
+		fmt.Printf("PoW: %s\n", strconv.FormatBool(pow.Validate()))
+		fmt.Println()
 	}
-
-	connect()
-	run()
 }
 
