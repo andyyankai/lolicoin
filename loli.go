@@ -28,7 +28,12 @@ func (b *Loli) SetHash() {
 // NewBlock creates and returns Block
 func NewLoli(data string, prevLoliHash []byte) *Loli {
 	loli := &Loli{time.Now().Unix(), []byte(data), prevLoliHash, []byte{}, 0}
-	loli.SetHash()
+	pow := NewProofOfWork(loli)
+	nonce, hash := pow.Run()
+
+	loli.Hash = hash[:]
+	loli.Nonce = nonce
+
 	return loli
 }
 

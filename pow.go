@@ -1,3 +1,5 @@
+//brute force algorithm for mining
+
 package main
 
 import (
