@@ -41,3 +41,15 @@ func NewLoli(data string, prevLoliHash []byte) *Loli {
 func NewGenesisLoli() *Loli {
 	return NewLoli("Genesis Loli", []byte{})
 }
+
+func DeserializeLoli(d []byte) *Loli {
+	var loli Loli
+
+	decoder := gob.NewDecoder(bytes.NewReader(d))
+	err := decoder.Decode(&loli)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return &loli
+}
