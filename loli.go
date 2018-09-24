@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
-	"crypto/sha256"
-	"strconv"
+	"encoding/gob"
+	"log"
 	"time"
 )
 
@@ -13,16 +13,20 @@ type Loli struct {
 	Data          []byte
 	PrevLoliHash []byte
 	Hash          []byte
-	Nonce		int
+	Nonce         int
 }
 
-// SetHash calculates and sets block hash
-func (b *Loli) SetHash() {
-	timestamp := []byte(strconv.FormatInt(b.Timestamp, 10))
-	headers := bytes.Join([][]byte{b.PrevLoliHash, b.Data, timestamp}, []byte{})
-	hash := sha256.Sum256(headers)
+// Serialize serializes the block
+func (b *Loli) Serialize() []byte {
+	var result bytes.Buffer
+	encoder := gob.NewEncoder(&result)
 
-	b.Hash = hash[:]
+	err := encoder.Encode(b)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return result.Bytes()
 }
 
 // NewBlock creates and returns Block
